@@ -29,7 +29,7 @@ class User(db.Model):
     favorites = relationship('Favorites', backref='user', lazy=True)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.id
 
     def serialize(self):
         return {
@@ -49,12 +49,12 @@ class Planets(db.Model):
     favorites = relationship('Favorites', backref='planets', lazy=True)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Planets %r>' % self.id
 
     def serialize(self):
         return {
             "id": self.id,
-            "email": self.email,
+            "name": self.name,
             # do not serialize the password, its a security breach
         }
 
@@ -69,12 +69,12 @@ class Characters(db.Model):
     favoritos = relationship('Favoritos', backref='characters', lazy=True)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Characters %r>' % self.id
 
     def serialize(self):
         return {
             "id": self.id,
-            "email": self.email,
+            "name": self.name,
             # do not serialize the password, its a security breach
         }
 
@@ -88,12 +88,12 @@ class Vehicles(db.Model):
     favoritos = relationship('Favoritos', backref='vehicles', lazy=True)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Vehicles %r>' % self.id
 
     def serialize(self):
         return {
             "id": self.id,
-            "email": self.email,
+            "name": self.name,
             # do not serialize the password, its a security breach
         }
 
@@ -110,7 +110,7 @@ class Favorites(db.Model):
         nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Favorites %r>' % self.id
 
     def serialize(self):
         return {
