@@ -24,9 +24,10 @@ class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
+    password = db.Column(db.String(120), nullable=False)
     age = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), nullable=False)
-    favorites = relationship('Favorites', backref='user', lazy=True)
+    favorites = db.relationship('Favorites', backref='user', lazy=True)
 
     def __repr__(self):
         return '<User %r>' % self.id
@@ -35,6 +36,7 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
+            "password": self.password
             # do not serialize the password, its a security breach
         }
 
@@ -46,7 +48,7 @@ class Planets(db.Model):
     population = db.Column(db.String(120), nullable=False)
     rotation = db.Column(db.String(120), nullable=False)  
     diameter = db.Column(db.String(120), nullable=False)   
-    favorites = relationship('Favorites', backref='planets', lazy=True)
+    favorites = db.relationship('Favorites', backref='planets', lazy=True)
 
     def __repr__(self):
         return '<Planets %r>' % self.id
@@ -66,7 +68,7 @@ class Characters(db.Model):
     gender = db.Column(db.String(120), nullable=False)
     height = db.Column(db.String(120), nullable=False)  
     eye_color = db.Column(db.String(120), nullable=False)   
-    favoritos = relationship('Favoritos', backref='characters', lazy=True)
+    favoritos = db.relationship('Favorites', backref='characters', lazy=True)
 
     def __repr__(self):
         return '<Characters %r>' % self.id
@@ -84,8 +86,8 @@ class Vehicles(db.Model):
     name = db.Column(db.String(120), nullable=False)
     model = db.Column(db.String(120), nullable=False)
     manufacturer = db.Column(db.String(120), nullable=False)  
-    Cost_in_credits = db.Column(db.String(120), nullable=False)   
-    favoritos = relationship('Favoritos', backref='vehicles', lazy=True)
+    cost_in_credits = db.Column(db.String(120), nullable=False)   
+    favoritos = db.relationship('Favorites', backref='vehicles', lazy=True)
 
     def __repr__(self):
         return '<Vehicles %r>' % self.id
@@ -100,13 +102,13 @@ class Vehicles(db.Model):
 class Favorites(db.Model):
     __tablename__ = 'favorites'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('user.id'),
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
         nullable=False)
-    planets_id = db.Column(db.Integer, ForeignKey('planets.id'),
+    planets_id = db.Column(db.Integer, db.ForeignKey('planets.id'),
         nullable=False)
-    charancteres_id = db.Column(db.Integer, ForeignKey('characters.id'),
+    charancteres_id = db.Column(db.Integer, db.ForeignKey('characters.id'),
         nullable=False)
-    vehicles_id = db.Column(db.Integer, ForeignKey('vehicles.id'),
+    vehicles_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'),
         nullable=False)
 
     def __repr__(self):
@@ -115,13 +117,5 @@ class Favorites(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "email": self.email,
             # do not serialize the password, its a security breach
         }
-
-    def to_dict(self):
-        return {}
-
-
-## Draw from SQLAlchemy base
-render_er(Base, 'diagram.png')
